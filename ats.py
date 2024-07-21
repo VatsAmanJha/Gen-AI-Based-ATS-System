@@ -3,7 +3,7 @@ import os
 import PyPDF2 as pdf
 
 # Configure the generative AI model
-genai.configure(api_key="AIzaSyDvc1c_D5OnRUm8zTi2T-mNxKKmKcY1Pys")
+genai.configure(api_key="Your API Key")
 model = genai.GenerativeModel("gemini-pro")
 
 
