@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS (Applicant Tracking System)</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+        }
+        .container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #e0e0e0;
+        }
+        input[type="file"], textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #333;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        input[type="file"] {
+            border: none;
+            background-color: #333;
+            cursor: pointer;
+        }
+        textarea {
+            height: 120px;
+            resize: none;
+        }
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            background-color: #292929;
+            padding: 20px;
+            border-radius: 8px;
+            display: {% if jd_match %}block{% else %}none{% endif %};
+            margin-top: 20px;
+            text-align: left;
+        }
+        .result h2 {
+            margin-top: 0;
+            color: #007BFF;
+        }
+        .result p {
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        .missing-keywords {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ATS (Applicant Tracking System)</h1>
+        <form action="/evaluate/" method="post" enctype="multipart/form-data">
+            <label for="resume">Upload Resume (PDF):</label>
+            <input type="file" id="resume" name="file" accept="application/pdf" required>
+            <label for="jobDescription">Job Description:</label>
+            <textarea id="jobDescription" name="job_description" rows="5" required>{{ request.form.job_description }}</textarea>
+            <button type="submit">Evaluate</button>
+        </form>
+        <div class="result">
+            <h2>Evaluation Result</h2>
+            <p><strong>JD Match:</strong> {{ jd_match }}</p>
+            <p><strong>Missing Keywords:</strong> 
+                {% for keyword in missing_keywords %}
+                    <span class="missing-keywords">{{ keyword }}</span>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p><strong>Profile Summary:</strong> {{ profile_summary }}</p>
+        </div>
+    </div>
+</body>
+</html>
